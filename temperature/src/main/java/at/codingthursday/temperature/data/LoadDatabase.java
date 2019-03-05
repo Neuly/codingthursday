@@ -1,20 +1,59 @@
 package at.codingthursday.temperature.data;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
+import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
+import com.opencsv.CSVReader;
 
 @Configuration
 class LoadDatabase {
 
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoadDatabase.class);
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	@Bean
 	CommandLineRunner initDatabase(TemperatureDataRepository repository) {
+		Resource csvFile = resourceLoader.getResource("classpath:zipCodes/AT.txt");
+
+		CSVReader reader = null;
+		HashMap<Integer, String[]> beispielDaten = new HashMap();
+
+		List<String[]> beispieldaten = new ArrayList<>();
+		try {
+			reader = new CSVReader(new FileReader(csvFile.getFile()), '\t');
+			String[] line;
+			while ((line = reader.readNext()) != null) {
+				beispieldaten.add(line);
+				beispielDaten.put(Integer.parseInt(line[1]), line);
+			}
+		} catch (IOException e) {
+			log.error("During initDatabase", e);
+		}
+
+		beispielDaten.keySet().stream().distinct().sorted().forEach(value -> {
+			double temperature = Math.random() * 5 + 17.5; // Temperaturen zwischen 17.5 und 22.5 erzeugen
+			String[] line = beispielDaten.get(value);
+			log.info("Preloading " + line[1] + " " + repository.save(new TemperatureData(temperature, TemperatureScale.CELSIUS,
+					Double.valueOf(line[10]), Double.valueOf(line[9]))));
+		});
 		return args -> {
-			log.info("Preloading " + repository.save(new TemperatureData(5.0, TemperatureScale.CELSIUS)));
-			log.info("Preloading " + repository.save(new TemperatureData(20.0, TemperatureScale.FAHRENHEIT)));
 		};
 	}
+
 }
