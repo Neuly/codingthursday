@@ -41,10 +41,10 @@ class LoadDatabase {
 			log.error("During initDatabase", e);
 		}
 
-		beispielDaten.keySet().stream().distinct().sorted().forEach(value -> {
+		beispielDaten.keySet().stream().distinct().filter(p -> p > 5000 && p < 6000).sorted().forEach(value -> {
 			double temperature = Math.random() * 5 + 17.5; // Temperaturen zwischen 17.5 und 22.5 erzeugen
 			String[] line = beispielDaten.get(value);
-			log.info("Preloading " + line[1] + " " + repository.save(new TemperatureData(temperature, TemperatureScale.CELSIUS,
+			log.info("Preloading " + line[1] + " " + repository.save(new TemperatureData(Long.parseLong(line[1]), temperature, TemperatureScale.CELSIUS,
 					Double.valueOf(line[10]), Double.valueOf(line[9]))));
 		});
 		return args -> {
