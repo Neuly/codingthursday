@@ -28,4 +28,28 @@ class TemperatureData {
 		this.temperatureScale = temperatureScale;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(Double temperature) {
+		this.temperature = temperature;
+	}
+
+	public TemperatureScale getTemperatureScale() {
+		return temperatureScale;
+	}
+
+	public void setTemperatureScale(TemperatureScale temperatureScale) {
+		this.temperatureScale = temperatureScale;
+	}
+
 }
