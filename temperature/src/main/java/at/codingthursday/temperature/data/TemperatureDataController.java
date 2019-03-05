@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import at.codingthursday.temperature.data.TemperatureDataRepository;
+
+import jdk.internal.jline.internal.Log;
 
 @RestController
 class TemperatureDataController {
@@ -25,6 +26,8 @@ class TemperatureDataController {
 	private final TemperatureDataRepository repository;
 
 	private final TemperatureDataResourceAssembler assembler;
+
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TemperatureDataController.class);
 
 	TemperatureDataController(TemperatureDataRepository repository, TemperatureDataResourceAssembler assembler) {
 		this.repository = repository;
@@ -60,8 +63,21 @@ class TemperatureDataController {
 		return assembler.toResource(temperatureData);
 	}
 
+	@GetMapping("/temperature/getByPostalCode/{postalCode}")
+	Resource<TemperatureData> getByPostalCode(@PathVariable Long postalCode) {
+		try {
+			log.info("Looking for postalCode; " + postalCode);
+			TemperatureData temperatureData = repository.findAll().stream()
+					.filter(p -> postalCode.compareTo(p.getPostalCode()) == 0)
+					.findAny().get();
+			return assembler.toResource(temperatureData);
+		} catch (Exception e) {
+			throw new TemperatureDataNotFoundException(postalCode);
+		}
+	}
+
 	@DeleteMapping("/temperature/{id}")
-	ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
+	ResponseEntity<?> deleteTemperature(@PathVariable Long id) {
 		repository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}

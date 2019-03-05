@@ -11,7 +11,6 @@ class TemperatureDataResourceAssembler implements ResourceAssembler<TemperatureD
 
 	@Override
 	public Resource<TemperatureData> toResource(TemperatureData temperatureData) {
-
 		return new Resource<>(temperatureData,
 				linkTo(methodOn(TemperatureDataController.class).one(temperatureData.getId())).withSelfRel(),
 				linkTo(methodOn(TemperatureDataController.class).all()).withRel("temperature"));

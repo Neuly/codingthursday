@@ -23,11 +23,15 @@ class TemperatureData {
 
 	private Double longitude;
 
+	private Long postalCode;
+
 	TemperatureData() {
 
 	}
 
-	TemperatureData(Double temperature, TemperatureScale temperatureScale, Double latitude, Double longitude) {
+	TemperatureData(Long postalCode, Double temperature, TemperatureScale temperatureScale, Double latitude,
+			Double longitude) {
+		this.postalCode = postalCode;
 		this.temperature = temperature;
 		this.temperatureScale = temperatureScale;
 		this.latitude = latitude;
@@ -72,6 +76,14 @@ class TemperatureData {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+
+	public Long getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(Long postalCode) {
+		this.postalCode = postalCode;
 	}
 
 }

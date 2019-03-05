@@ -7,4 +7,5 @@ class TemperatureDataNotFoundException extends RuntimeException {
 	TemperatureDataNotFoundException(Long id) {
 		super("Could not find temperature Data for " + id);
 	}
+
 }
