@@ -26,7 +26,6 @@ class TemperatureDataController {
 	private final TemperatureDataResourceAssembler assembler;
 
 	TemperatureDataController(TemperatureDataRepository repository, TemperatureDataResourceAssembler assembler) {
-
 		this.repository = repository;
 		this.assembler = assembler;
 	}

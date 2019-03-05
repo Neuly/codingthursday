@@ -19,13 +19,19 @@ class TemperatureData {
 	@Enumerated(EnumType.STRING)
 	private TemperatureScale temperatureScale;
 
+	private Double latitude;
+
+	private Double longitude;
+
 	TemperatureData() {
 
 	}
 
-	TemperatureData(Double temperature, TemperatureScale temperatureScale) {
+	TemperatureData(Double temperature, TemperatureScale temperatureScale, Double latitude, Double longitude) {
 		this.temperature = temperature;
 		this.temperatureScale = temperatureScale;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public Long getId() {
@@ -50,6 +56,22 @@ class TemperatureData {
 
 	public void setTemperatureScale(TemperatureScale temperatureScale) {
 		this.temperatureScale = temperatureScale;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 
 }
