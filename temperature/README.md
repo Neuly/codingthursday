@@ -18,4 +18,12 @@ Das ist ein Schummelzettel für mich als Vortragenden. Vertrauen, dass man alles
 
 ## deploying OpenShift using Docker File from Folder
 
+oc new-build --strategy docker --binary --name temperature2
 
+oc start-build temperature2 --from-dir . --follow
+
+oc new-app temperature2
+
+oc expose temperature2
+
+oc get route temperature2
